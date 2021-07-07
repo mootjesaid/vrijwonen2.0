@@ -1,0 +1,117 @@
+/* aanmaak datum: 27/05/2021, 13:10. author: Mohamad Dian Bah
+Revision history
+*/
+
+/*
+body{
+
+} */
+
+/* nav{
+
+} */
+h1{
+  font-size: 2em !important;
+  font-weight: bold !important;
+}
+
+td{
+  display: block;
+  /* border: 1px solid red !important; */
+  /* margin: 8px !important; */
+}
+td input{
+  border-radius: 4px;
+}
+ul, h1{
+  text-align: center;
+}
+/* form{
+} */
+
+td img{
+  /* width: 100px; */
+  /* height: 50px; */
+  padding: 0 !important;
+  border: 1px solid var(--main-color-1);
+  border-radius: 5px 3%;
+  box-shadow:0 0 5px var(--main-color-1);
+}
+/* --------------------aad_new_housse.php---------------- */
+tr td input, tr td textarea{
+  margin: 1%;
+}
+textarea{
+  height: 17px;
+}
+/* --------------------overzicht---------------- */
+
+/* .table_overzicht{
+  margin-left: 25%;
+} */
+.tr_over{
+  /* padding-left: 16.66% !important; */
+  text-align: center;
+  margin-left: 16.66% ;
+  margin-right: 16.66%;
+}
+
+
+table td a, .a_next{
+  text-decoration: none;
+  display: inline-block;
+  background-color: var(--main-color-1);
+  color: var(--main-color-3);
+  border: 1px solid var(--main-color-3);
+  border-radius: 35px;
+  /* padding: 2px; */
+  
+  width: 115px;
+  height: 20px;
+  line-height: unset;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 2px;
+  font-weight: 700;
+  box-shadow: 0 10px 15px var(--main-color-1);
+  transition: 320ms;
+}
+
+table td a, .a_next:hover,
+table td a, .a_next:focus{ 
+  background-color: var(--main-color-3);
+  color: var(--main-color-1);
+
+  box-shadow: 0 5px 15px var(--main-color-1);
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+/* --------------------Detail.php---------------- */
+#a_aanpassen{
+  float: right;
+  margin-right: 15px;
+}
+.table_detail{
+  margin-left: 25%;
+}
+.a_detail{
+  line-height: 18px;
+}
+
+.imgs_detail img{ /*td img */
+  /* width: 330px; */
+  border: 2px solid var(--main-color-1);
+  border-radius: 5px 3%;
+  box-shadow:0 0 10px var(--main-color-1);
+
+}
+/* --------------------update.php---------------- */
+
+.textarea_update{
+  /* min-width: 240px; */
+  min-height: 200px;
+  border-radius: 5px;
+}
