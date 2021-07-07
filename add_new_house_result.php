@@ -13,11 +13,11 @@ Revision history
   
   //-------Chek-the-selected-locations--------------------------------------------
     $locations= [
-	    "-Dicht bij een bos. ",
-	    "-Dicht bij een stad. ",
-	    "-Dicht bij de zee. ",
-	    "-In het heuvelland. ",
-	    "-Aan het water. "
+	    "1",
+	    "2",
+	    "3",
+	    "4",
+	    "5"
     ];
     $selected_locations=""; //at the end i put it in a string.
   
@@ -25,11 +25,17 @@ Revision history
 	    $posted_locations= $_POST["location"]; // the vallue of the selected ones in the form in an array
 	    foreach($posted_locations as $item) {//i define the right location based on the value that i get out the form and put it in a string.
 	      // printf("<p>%s - %s - (%s)</p>",$locations[$item],"was de keuze", "woei");
-	      $selected_locations.= $locations[$item];
+	      $selected_locations.= $locations[$item].",";
 	    }
-      $max_lenght= strlen($selected_locations);
-      $selected_locations= substr(trim($selected_locations),0,$max_lenght-2); //remove   ,'   at the end to put it in an aaray later on
-    
+
+        $selected_locations = rtrim($selected_locations, ','); //rtrim means: right trim at the end.
+        $arr_selected_locations = explode(",", $selected_locations);
+
+
+        $house_id=1;
+        foreach ($arr_selected_locations as $item) {
+            insert_locations_value($house_id,$item);
+        }
     }//-------end locations--
   //-------Chek-the-selected-propreties-------------------------------------------
     $properties= [
@@ -98,26 +104,34 @@ Revision history
     include("./database/config.php");
     include("./database/opendb.php");
 
-    $query = "INSERT INTO houses(title, price, description, location, properties, status, address, postalcode, place, image_path_first_photo, image_path_photos)";
-    $query .= "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "db_woningen_update";
 
-	  $preparedQuery = $dbaselink->prepare($query);
-	  $preparedQuery->bind_param("sssssssssss",$title, $price, $description, $selected_locations, $selected_properties, $selected_status, $address, $postalcode, $place, $first_photo, $four_photos);
-	  $result = $preparedQuery->execute();
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-	  if(($preparedQuery->errno) || ($result === false)){
-	    echo $preparedQuery->error;
-	    echo "<center><h3>-Fout bij uitvoeren commando met afbeelding.</h3></center><br><br>";
-	    echo "<a href=\"javascript:%20history.go(-1)\">Terug naar Invoerscherm</a></center>";
-	    exit;
-	  }else{
-	    $added= "Het huis is toegevoegd";
+$sql = "INSERT INTO houses (house_location_id, price, description, address, postalcode, place)
+VALUES ('".$_POST["title"]."','".$_POST["price"]."','".$_POST["description"]."','".$_POST["address"]."', '".$_POST["postalcode"]."', '".$_POST["place"]."')";
 
-	    $preparedQuery->close();	  
-	    include("./database/closedb.php");
+$sql = "INSERT INTO houses_location (house_id, location_id)
+VALUES ('".$_POST["house_id"]."','".$_POST["location[]"]."')";
 
-	    echo "<script type='text/javascript'>alert('$added');</script>";
-	    echo '<meta http-equiv="refresh" content="0;URL=\'overview.php\'">';
-	  }
+$sql = "INSERT INTO houses_location (house_id, location_id)
+VALUES ('".$_POST["house_id"]."','".$_POST["location[]"]."')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+?>
 
 ?>

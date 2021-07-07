@@ -69,11 +69,11 @@ Revision history
             <b>Ligging:</b>          
             <label>
               <input type="checkbox" name="location[]" value="0">
-              -Dicht bij een bos.
+              -Dicht bij een stad.
             </label>          
             <label>
               <input type="checkbox" name="location[]" value="1">
-              -Dicht bij een stad.
+              -Dicht bij een bos.
             </label>          
             <label>
               <input type="checkbox" name="location[]" value="2">
