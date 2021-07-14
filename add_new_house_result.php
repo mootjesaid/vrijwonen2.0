@@ -153,6 +153,7 @@ if(isset($_POST["submit"]) && !empty($_FILES["photo_1"]["name"])) {
 // File upload path
 $targetDir = "images/";
 $fileName = basename($_FILES["photo_2"]["name"]);
+
 $targetFilePath = $targetDir . $fileName;
 $fileType1 = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 
