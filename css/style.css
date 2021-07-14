@@ -102,7 +102,7 @@ table td a, .a_next:focus{
 }
 
 .imgs_detail img{ /*td img */
-  width: 330px;
+  width: 450px;
   border: 2px solid var(--main-color-1);
   border-radius: 5px 3%;
   box-shadow:0 0 10px var(--main-color-1);
