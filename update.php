@@ -25,133 +25,191 @@ Revision history
 	  <meta name="theme-color" content="white"/>
   </head>
   <body>
-    <?php require "inc/navbar.php"; 
-      require_once("./functions/functions_overview.php");
+  <?php 
+    require "inc/navbar.php";
+    require_once("./functions/functions_detail.php");
+    require_once("./functions/functions_update_result.php");
 
-      if(!isset($_GET["house_id"]) || empty($_GET["house_id"])){
-        echo "Huis ID is niet mee gegeven.";
-        exit;
-      }else{
-        $house_id= $_GET["house_id"];
+    //chek the ID
+    if(!isset($_GET["house_id"]) || empty($_GET["house_id"])){
+      echo "Huis ID is niet mee gegeven.";
+      exit;
+    }else{
+      $house_id= $_GET["house_id"];
+    }
+
+    //--------------houses data-------------
+      house_data($house_id);//It returns the house data in SESSIONS
+
+      $title= $_SESSION["title"];
+		  $price= $_SESSION["price"];
+		  $address= $_SESSION["address"];
+		  $postalcode= $_SESSION["postalcode"];
+		  $place= $_SESSION["place"];
+		  $description= $_SESSION["description"];
+
+    //--------------house_locations id's ophalen---
+      houses_locations($house_id);
+      $str_location_id= $_SESSION["location_id"];
+      $arr_location_id = explode(",", $str_location_id);
+
+      //-----location_value------
+      $str_value_locations="";
+      foreach ($arr_location_id as $item) {
+        value_location($item); // value_location
+        $str_value_locations.= $_SESSION["value_location"];
       }
-
-      include("./database/config.php");
-      include("./database/opendb.php");
-
-      $query = "SELECT title, price, description, location, properties, status, address, postalcode, place, image_path_first_photo, image_path_photos FROM houses WHERE house_id= ?";
-
-      $preparedQuery=$dbaselink->prepare($query);  
-      $preparedQuery->bind_param("i",$house_id);
-      $preparedQuery->execute();
-
-      if($preparedQuery->errno){
-        echo "query is not working ";
-      }else{
-        $result=$preparedQuery->get_result();
-        if($result->num_rows===0){
-          echo "-Er is geen huis met HUIS ID: <b>".$house_id."</b>  gevonden";
-          exit;    
-        }
-      }
-      $preparedQuery->close();
-
-      while($row=$result->fetch_assoc ()){//putting values in variables are only useful for 1 line result in detail.php
-        $title= $row["title"];
-        $price= $row["price"];
-        $price= substr(trim($price),0,-3);
-        $address= $row["address"];
-        $postalcode= $row["postalcode"];
-        $place= $row["place"];
-        $description= $row["description"];
-        $arr_images = explode(",", $row["image_path_photos"]);  //convert string to array;
-        $first_photo= $row["image_path_first_photo"];
-        $location= $row["location"];
-        $properties= $row["properties"];
-        $status= $row["status"];
-      }
-      include("./database/closedb.php");
-    ?>
-    <script>
-      // I make a javascript array whit a php array           AND add the first photo at the of the array to avoid dublle clik at the begining.
-      var images = ["<?php echo $arr_images[0]."\",\"".$arr_images[1]."\",\"".$arr_images[2]."\",\"".$arr_images[3]."\",\"first_image/".$first_photo; ?>"];
-
-      var count = 0;
-      function changeImg() {
-        img.src= "./images/"+images[count];    
-        count++;
-        if(count >= 5){count = 0;}
-      }
-    </script>
-
-    <h2><b><?php echo $title; ?></b></h2>
-
-    <table class="table_detail">
-      <tr>
-    	   <td><b>Afbeeldingen: </b> <!--<button class="a_next" onclick="changeImg()">volgende ››</button>--></td>           
-        <td class="imgs_detail">
-          <!--------------------------------------------- images-------------------------------------------------- -->
-          <?php echo "<img src=\"./images/first_image/".$first_photo."\" alt=\"Afbeeldingen van het huis.\" id=\"img-id\" onclick=\"changeImg()\">"; ?>
-           <script>
-            var img = document.getElementById("img-id"); // Get/Set the img tag
-          </script>
-          <!--------------------------------------------- images-------------------------------------------------- -->
-        </td>
-    	</tr>
-    
-
-    <!-- form whit input -->
-    <form action="./update_result.php" method="post" enctype="multipart/form-data"><role="form">
+    //--------------house_propertie ids ophalen----
+      houses_properties($house_id);
+      $str_propertie_id= $_SESSION["propertie_id"];
+      $arr_propertie_id = explode(",", $str_propertie_id);
       
-        <tr>
-          <td class="col-3">titel: </td>
-    	    <td class="col-5"><input  type="text" name="title" value="<?php echo $title; ?>"></td>          
-    	  </tr>
-        <tr>
-          <td class="col-3">Prijs: &nbsp;&nbsp;€</td>
-    	    <td class="col-5"><input  type="text" name="price" value="<?php echo $price; ?>"></td>          
-    	  </tr>
-        <tr>
-          <td class="col-3">Adres: </td>
-    	    <td class="col-5"><input type="text" name="address" value="<?php echo $address; ?>"></td>          
-    	  </tr>
-        <tr>
-          <td class="col-3">Postcode: </td>
-    	    <td class="col-5"><input type="text" name="postalcode" value="<?php echo $postalcode; ?>"></td>          
-    	  </tr>
-        <tr>
-          <td class="col-3">Plaats: </td>
-    	    <td class="col-5"><input type="text" name="place" value="<?php echo $place; ?>"></td>          
-    	  </tr>
-        <tr>
-          <td class="col-3">Omschijving: </td>
-          <td class="col-5"><textarea class="textarea_update" type="text" name="description"><?php echo $description; ?></textarea> </td>    
-    	  </tr>
-        
-        <tr>
-          <td>
-            <h3>Status:</h3>
+      //-----propertie_value------
+      $str_value_properties="";
+      foreach ($arr_propertie_id as $item) {
+        value_propertie($item); // value_propertie
+        $str_value_properties.= $_SESSION["value_propertie"];
+      }
+    //--------------house_status ids ophalen-------
+      houses_status($house_id);
+      $str_status_id= $_SESSION["status_id"];
+      $arr_status_id = explode(",", $str_status_id);
+
+      //-----status_value------
+      $str_value_status="";
+      foreach ($arr_status_id as $item) {
+        value_status($item); // value_status
+        $str_value_status.= $_SESSION["value_status"];
+      }
+    //Dit werkt niet in een functie
+      //$counter= substr_count($str_value_status, $str_value_locations);
+      //if($counter> 0){
+      //  echo "checked= \"checked\"";
+      //}
+      
+
+    
+  
+  ?>
+    <form action="./update_result.php?house_id=<?php echo $house_id; ?>" method="post" enctype="multipart/form-data"><role="form">
+      <h1><?php echo $title; ?></h1>
+      <table class="col-12">
+        <tr class="col-12">
+    	    <td class="col-12">
+            <input class="col-5" type="text" name="title" value="<?php echo $title; ?>"> 
+            <input class="col-5" type="text" name="price" value="<?php echo $price; ?>">
           </td>
-          <td>
-            <label>
-              <input type="radio" name="status[]" value="0">
-              beschikbaar
+    	  </tr>
+        <tr class="col-12">
+    	    <td class="col-12">
+            <input class="col-5" type="text" name="address" value="<?php echo $address; ?>">
+            <input class="col-5" type="text" name="postalcode" value="<?php echo $postalcode; ?>">
+          </td>
+    	  </tr>
+        <tr class="col-12">
+    	    <td class="col-12">
+            <input class="col-5" type="text" name="place" value="<?php echo $place; ?>">
+            <textarea class="col-5" input type="text" name="description" ><?php echo $description; ?></textarea>
+          </td>
+    	  </tr>
+        <tr class="col-12">
+    	    <td class="col-12">
+            <label class="col-7">
+              <b>Default Afbeelding:</b>  <input type="file" name="first_photo" accept="image/*">
             </label>
           </td>
-          <td>
+    	  </tr>
+        <tr class="col-12">
+    	    <td class="col-12">
+            <b class="col-12">4 Afbeelding kiezen: </b>
+          </td>
+          <td class="col-12">
+            <label><b>1</b>
+              <input class="col-2" type="file" name="photo_1" accept="image/*">              
+            </label>
+            <label>2
+              <input class="col-2" type="file" name="photo_2" accept="image/*">
+            </label>
+            <label>3
+              <input class="col-2" type="file" name="photo_3" accept="image/*">              
+            </label>
+            <label><b>4</b>
+              <input class="col-2" type="file" name="photo_4" accept="image/*">
+            </label>           
+          </td>
+        </tr>
+          <!-- -----------start----Ligging------------------ -->
+        <tr class="col-12">
+          <td class="col-11">
+            <b>Ligging:</b>          
             <label>
-              <input type="radio" name="status[]" value="1">
+              <input type="checkbox" name="location[]" value="0" <?php $counter= substr_count($str_value_locations,"bos"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Dicht bij een bos.
+            </label>          
+            <label>
+              <input type="checkbox" name="location[]" value="1" <?php $counter= substr_count($str_value_locations,"stad"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Dicht bij een stad.
+            </label>          
+            <label>
+              <input type="checkbox" name="location[]" value="2" <?php $counter= substr_count($str_value_locations,"zee"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Dicht bij de zee.
+            </label>          
+            <label>
+              <input type="checkbox" name="location[]" value="3" <?php $counter= substr_count($str_value_locations,"heuvelland"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -In het heuvelland.
+            </label>          
+            <label>
+              <input type="checkbox" name="location[]" value="4" <?php $counter= substr_count($str_value_locations,"water"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Aan het water.
+            </label>
+          </td>
+        </tr>
+        <!-- ----------einde-----Ligging------------------ -->
+        <!-- ----------start-----Eigenschappen------------------ -->
+        <tr class="col-12">
+          <td class="col-11">
+            <b>Eigenschappen:</b>          
+            <label>
+              <input type="checkbox" name="properties[]" value="0" <?php $counter= substr_count($str_value_properties,"inventaris"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Inclusief overname inventaris.
+            </label>          
+            <label>
+              <input type="checkbox" name="properties[]" value="1" <?php $counter= substr_count($str_value_properties,"Zwembad"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Zwembad op het park.
+            </label>          
+            <label>
+              <input type="checkbox" name="properties[]" value="2" <?php $counter= substr_count($str_value_properties,"Winkel"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Winkel op het park.
+            </label>          
+            <label>
+              <input type="checkbox" name="properties[]" value="3" <?php $counter= substr_count($str_value_properties,"Entertainment"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Entertainment op het park.
+            </label>          
+            <label>
+              <input type="checkbox" name="properties[]" value="4" <?php $counter= substr_count($str_value_properties,"privepark"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              -Op een privepark.
+            </label>
+          </td>
+        </tr>
+        <tr class="col-12">
+          <td class="col-11">
+            <b>Status:</b>
+            <label>
+              <input type="radio" name="status[]" value="0" <?php $counter= substr_count($str_value_status,"beschikbaar"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              beschikbaar
+            </label>
+            <label>
+              <input type="radio" name="status[]" value="1" <?php $counter= substr_count($str_value_status,"verkocht"); if($counter> 0){ echo "checked= \"checked\"";}?> >
               verkocht
             </label>
           </td>
         </tr>
-    	  <tr>
+        <!-- ---------einde------Eigenschappen------------------ -->
+    	  <tr class="col-12">
     	    <td><input class="a_next" type="submit" name="submit" value="Opslaan"></td>
-          <td><input type="hidden" name="house_id" value="<?php echo $house_id; ?>"></td>
     	  </tr>
       </table>
     </form>
-
-
 
   </body>
 </html>
