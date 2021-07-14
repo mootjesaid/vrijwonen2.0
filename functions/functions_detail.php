@@ -21,7 +21,7 @@ Revision history
 	  }else{
 	    $result=$preparedQuery->get_result();
 	    if($result->num_rows===0){
-	      echo "-Er is geen huis met HUIS ID: <b>".$house_id."</b>  gevonden";
+	      echo "-Er is geen huis met HUIS ID: <b>".$house_id."</b>  gevonden<br>";
           exit;    
 	    }
 	  }
@@ -52,7 +52,7 @@ Revision history
       }else{
         $result=$preparedQuery->get_result();
         if($result->num_rows===0){
-          echo "-Er zijn geen afbeeldingen voor dit huis met HUIS ID: <b>".$house_id."</b>  gevonden";
+          echo "-Er zijn geen afbeeldingen voor dit huis met HUIS ID: <b>".$house_id."</b>  gevonden<br>";
           exit;    
         }
       }
@@ -83,8 +83,7 @@ Revision history
       }else{
         $result=$preparedQuery->get_result();
         if($result->num_rows===0){
-          echo "-Er is geen location_id met HUIS ID: <b>".$house_id."</b>  gevonden";
-          exit;    
+          echo "-Er is geen location_id met HUIS ID: <b>".$house_id."</b>  gevonden<br>";   
         }
       }
       $preparedQuery->close();
@@ -113,8 +112,7 @@ Revision history
       }else{
         $result=$preparedQuery->get_result();
         if($result->num_rows===0){
-          echo "-Er is geen location met location ID: <b>".$location_id."</b>  gevonden";
-          exit;    
+          echo "-Er is geen location met location ID: <b>".$location_id."</b>  gevonden<br>"; 
         }
       }
       $preparedQuery->close();
@@ -143,8 +141,7 @@ Revision history
 	  }else{
 	    $result=$preparedQuery->get_result();
 	    if($result->num_rows===0){
-	  	echo "-Er is geen propertie_id met HUIS ID: <b>".$house_id."</b>  gevonden";
-	  	exit;    
+	  	echo "-Er is geen propertie_id met HUIS ID: <b>".$house_id."</b>  gevonden<br>";
 	    }
 	  }
 	  $preparedQuery->close();
@@ -173,8 +170,7 @@ Revision history
 		}else{
 		  $result=$preparedQuery->get_result();
 		  if($result->num_rows===0){
-			echo "-Er is geen propertie met propertie ID: <b>".$propertie_id."</b>  gevonden";
-			exit;    
+			echo "-Er is geen propertie met propertie ID: <b>".$propertie_id."</b>  gevonden<br>";   
 		  }
 		}
 		$preparedQuery->close();
@@ -187,64 +183,62 @@ Revision history
   
 		include("./database/closedb.php");
 	  }
-  //--------------houses_status-------------------------------
+  //--------------houses_status-----------------------------------
     function houses_status($house_id){	
 	  include("./database/config.php");
 	  include("./database/opendb.php");
 	  $query = "SELECT status_id FROM houses_status WHERE house_id=?";
 
-	$preparedQuery=$dbaselink->prepare($query);  
-	$preparedQuery->bind_param("i",$house_id);
-	$preparedQuery->execute();
+	  $preparedQuery=$dbaselink->prepare($query);  
+	  $preparedQuery->bind_param("i",$house_id);
+	  $preparedQuery->execute();
 
-	if($preparedQuery->errno){
-	  echo "query is not working ";
-	}else{
-	  $result=$preparedQuery->get_result();
-	  if($result->num_rows===0){
-		echo "-Er is geen status_id met HUIS ID: <b>".$house_id."</b>  gevonden";
-		exit;    
+	  if($preparedQuery->errno){
+	    echo "query is not working ";
+	  }else{
+	    $result=$preparedQuery->get_result();
+	    if($result->num_rows===0){
+	  	  echo "-Er is geen status_id met HUIS ID: <b>".$house_id."</b>  gevonden<br>";
+	    }
 	  }
-	}
-	$preparedQuery->close();
+	  $preparedQuery->close();
 	
-	$str_status_id="";
-	while($row=$result->fetch_assoc ()){
-	  $str_status_id.= $row["status_id"].",";//voeg image_path aan de string
-	}
-	$str_status_id = rtrim($str_status_id, ','); //rtrim means: right trim at the end.
-	$_SESSION["status_id"]= $str_status_id;
-
-	include("./database/closedb.php");
-  }
-//----------value_status
-  function value_status($status_id){	
-	include("./database/config.php");
-	include("./database/opendb.php");
-	$query = "SELECT value_status FROM `status` WHERE status_id=?";
-
-	$preparedQuery=$dbaselink->prepare($query);  
-	$preparedQuery->bind_param("i",$status_id);
-	$preparedQuery->execute();
-
-	if($preparedQuery->errno){
-	  echo "query is not working ";
-	}else{
-	  $result=$preparedQuery->get_result();
-	  if($result->num_rows===0){
-		echo "-Er is geen status met status ID: <b>".$status_id."</b>  gevonden";
-		exit;    
+	  $str_status_id="";
+	  while($row=$result->fetch_assoc ()){
+	    $str_status_id.= $row["status_id"].",";//voeg image_path aan de string
 	  }
-	}
-	$preparedQuery->close();
-	$value_status="";
-	while($row=$result->fetch_assoc ()){
-	  $value_status.= $row["value_status"].",";//voeg image_path aan de string
-	}
-	$value_status = rtrim($value_status, ','); //rtrim means: right trim at the end.
-	$_SESSION["value_status"]= $value_status;
+	  $str_status_id = rtrim($str_status_id, ','); //rtrim means: right trim at the end.
+	  $_SESSION["status_id"]= $str_status_id;
 
-	include("./database/closedb.php");
-  }
+	  include("./database/closedb.php");
+    }
+    //----------value_status
+    function value_status($status_id){	
+	  include("./database/config.php");
+	  include("./database/opendb.php");
+	  $query = "SELECT value_status FROM `status` WHERE status_id=?";
+
+	  $preparedQuery=$dbaselink->prepare($query);  
+	  $preparedQuery->bind_param("i",$status_id);
+	  $preparedQuery->execute();
+
+	  if($preparedQuery->errno){
+	    echo "query is not working ";
+	  }else{
+	    $result=$preparedQuery->get_result();
+	    if($result->num_rows===0){
+	  	  echo "-Er is geen status met status ID: <b>".$status_id."</b>  gevonden<br>";  
+	    }
+	  }
+	  $preparedQuery->close();
+	  $value_status="";
+	  while($row=$result->fetch_assoc ()){
+	    $value_status.= $row["value_status"].",";//voeg image_path aan de string
+	  }
+	  $value_status = rtrim($value_status, ','); //rtrim means: right trim at the end.
+	  $_SESSION["value_status"]= $value_status;
+
+	  include("./database/closedb.php");
+    }
   
 ?>
