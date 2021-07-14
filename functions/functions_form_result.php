@@ -28,7 +28,9 @@ Revision history
 	if(isset($_FILES["".$fileName.""]) && (!empty($_FILES["".$fileName.""]["name"]))){
 
 	  $target_dir = "images/";
-
+	  if($fileName == "first_photo"){//to put the fist_photo in diffent map
+		$target_dir= "images/first_image/";
+	  }
 	  $target_file = $target_dir . basename($_FILES["".$fileName.""]["name"]);//double
 
 	  // Check if file already exists and change the name if he exist.
@@ -99,104 +101,5 @@ Revision history
   //$first_photo="".$_FILES["".$fileName.""]["name"]."";// This is the file name
 
   //-------end-photo-chek-------
-
-  //-------inset-locations-value-----
-  function insert_locations_value($house_id,$location_id){
-    include("./database/config.php");
-    include("./database/opendb.php");
-    $query = "INSERT INTO houses_locations (location_id, house_id) ";
-      $query .= "VALUES (?,?) ";
-
-      $preparedQuery=$dbaselink->prepare($query);
-      $preparedQuery->bind_param("si",$location_id, $house_id);
-      $preparedQuery->execute();
-
-//    if(($preparedQuery->ernno) || ($result === false)){
-//        echo "fout bij uitvoeren commando";
-//        exit;
-//    }else{
-//        //location value is toegevoegd;
-//    }
-
-
-    $preparedQuery->close();
-//    include("./database/closedb.php");
-}
-
-//-------inset-properties-value-----
-function insert_properties_value($house_id,$propertie_id){
-    include("./database/config.php");
-    include("./database/opendb.php");
-    $query = "INSERT INTO houses_properties (propertie_id, house_id) ";
-    $query .= "VALUES (?,?) ";
-
-    $preparedQuery=$dbaselink->prepare($query);
-    $preparedQuery->bind_param("si",$propertie_id, $house_id);
-    $preparedQuery->execute();
-
-//    if(($preparedQuery->ernno) || ($result === false)){
-//        echo "fout bij uitvoeren commando";
-//        exit;
-//    }else{
-//        //location value is toegevoegd;
-//    }
-
-
-
-    $preparedQuery->close();
-//    include("./database/closedb.php");
-}
-
-
-//-------inset-properties-value-----
-function insert_status_value($house_id,$status_id){
-    include("./database/config.php");
-    include("./database/opendb.php");
-    $query = "INSERT INTO houses_status (status_id, house_id) ";
-    $query .= "VALUES (?,?) ";
-
-    $preparedQuery=$dbaselink->prepare($query);
-    $preparedQuery->bind_param("si",$status_id, $house_id);
-    $preparedQuery->execute();
-
-//    if(($preparedQuery->ernno) || ($result === false)){
-//        echo "fout bij uitvoeren commando";
-//        exit;
-//    }else{
-//        //location value is toegevoegd;
-//    }
-
-
-
-    $preparedQuery->close();
-//    include("./database/closedb.php");
-}
-
-
-//-------inset-properties-value-----
-function insert_image_value($house_id,$image_path){
-    include("./database/config.php");
-    include("./database/opendb.php");
-    $query = "INSERT INTO images (image_path, house_id) ";
-    $query .= "VALUES (?,?) ";
-
-    $preparedQuery=$dbaselink->prepare($query);
-    $preparedQuery->bind_param("si",$image_path, $house_id);
-    $preparedQuery->execute();
-
-//    if(($preparedQuery->ernno) || ($result === false)){
-//        echo "fout bij uitvoeren commando";
-//        exit;
-//    }else{
-//        //location value is toegevoegd;
-//    }
-
-
-
-    $preparedQuery->close();
-//    include("./database/closedb.php");
-}
-
-
 
 ?>

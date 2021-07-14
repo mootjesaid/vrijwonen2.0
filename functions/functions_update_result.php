@@ -81,6 +81,52 @@ Revision history
         }
       $preparedQuery->close();
     }
+  //--------------insert houses_location ---------------
+    function insert_up_houses_locations($house_id, $location_id){
+      include("./database/config.php");
+      include("./database/opendb.php");
+      
+      $query = "INSERT INTO houses_locations (house_id, location_id) ";
+      $query .= "VALUES (?,?) ";
+  
+      $preparedQuery=$dbaselink->prepare($query);
+      $preparedQuery->bind_param("is", $house_id, $location_id);
+      $preparedQuery->execute();
+  
+      //location value is toegevoegd;
+      echo "locatie is toegevoed<br>";
+    }
+  //--------------insert houses_propertie --------------
+    function insert_up_houses_properties($house_id, $propertie_id){
+      include("./database/config.php");
+      include("./database/opendb.php");
+      
+      $query = "INSERT INTO houses_properties (house_id, propertie_id) ";
+      $query .= "VALUES (?,?) ";
+  
+      $preparedQuery=$dbaselink->prepare($query);
+      $preparedQuery->bind_param("is", $house_id, $propertie_id);
+      $preparedQuery->execute();
+  
+      //propertie value is toegevoegd;
+      echo "propertie is toegevoed<br>";
+    }
+  //--------------insert houses_status -----------------
+    function insert_up_houses_status($house_id, $status_id){
+      include("./database/config.php");
+      include("./database/opendb.php");
+      
+      $query = "INSERT INTO houses_status (house_id, status_id) ";
+      $query .= "VALUES (?,?) ";
+  
+      $preparedQuery=$dbaselink->prepare($query);
+      $preparedQuery->bind_param("is", $house_id, $status_id);
+      $preparedQuery->execute();
+  
+      //status value is toegevoegd;
+      echo "status is toegevoed<br>";
+      $preparedQuery->close();
+    }
 
 
 ?>

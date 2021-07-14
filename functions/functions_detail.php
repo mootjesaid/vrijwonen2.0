@@ -52,8 +52,7 @@ Revision history
       }else{
         $result=$preparedQuery->get_result();
         if($result->num_rows===0){
-          echo "-Er zijn geen afbeeldingen voor dit huis met HUIS ID: <b>".$house_id."</b>  gevonden<br>";
-          exit;    
+          echo "-Er zijn geen afbeeldingen voor dit huis met HUIS ID: <b>".$house_id."</b>  gevonden<br>";   
         }
       }
       $preparedQuery->close();
