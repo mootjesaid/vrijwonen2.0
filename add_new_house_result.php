@@ -204,7 +204,7 @@ if(isset($_POST["submit"]) && !empty($_FILES["photo_4"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["photo_4"]["tmp_name"], $targetFilePath)){
             // Insert image file name into database
-            $order = 5;
+            $order = 5  ;
             $insert = $db->query("INSERT into images (image_path, house_id, `order`) VALUES ('".$fileName."', '".$house_id."','".$order."')");
         }
     }
@@ -266,6 +266,8 @@ if ($conn->connect_error) {
 $sql = "INSERT INTO houses (title, price, description, address, postalcode, place)
 VALUES ('".$_POST["title"]."','".$_POST["price"]."','".$_POST["description"]."','".$_POST["address"]."', '".$_POST["postalcode"]."', '".$_POST["place"]."')";
 
+
+
 if ($conn->query($sql) === TRUE) {
     $house_id = $conn->insert_id;
     $_SESSION["house_id"]= $house_id;
@@ -290,7 +292,6 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
-
 
 $conn->close();
 ?>
