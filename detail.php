@@ -142,10 +142,12 @@ Revision history
     @page {
         margin-top: 0;
         margin-bottom: 0;
+        margin-right: 10;
     }
     body {
         padding-top: 72px;
-        padding-bottom: 72px ;
+        padding-bottom: 72px ; 
+        padding-right: 72px;
     }
 .no-print, .no-print *
     {
