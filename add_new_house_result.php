@@ -20,7 +20,7 @@ Revision history
 	    "5"
     ];
     $selected_locations=""; //at the end i put it in a string.
-  
+
     if(isset($_POST["location"])){
 	    $posted_locations= $_POST["location"]; // the vallue of the selected ones in the form in an array
 	    foreach($posted_locations as $item) {//i define the right location based on the value that i get out the form and put it in a string.
@@ -31,51 +31,70 @@ Revision history
         $selected_locations = rtrim($selected_locations, ','); //rtrim means: right trim at the end.
         $arr_selected_locations = explode(",", $selected_locations);
 
-
-        $house_id=1;
         foreach ($arr_selected_locations as $item) {
-            insert_locations_value($house_id,$item);
+            insert_locations_value($_SESSION["house_id"] + 1,$item);
         }
     }//-------end locations--
   //-------Chek-the-selected-propreties-------------------------------------------
     $properties= [
-	    "-Inclusief overname inventaris. ",
-	    "-Zwembad op het park. ",
-	    "-Winkel op het park. ",
-	    "-Entertainment op het park. ",
-	    "-Op een privepark. "
+	    "1",
+	    "2",
+	    "3",
+	    "4",
+	    "5"
     ];
     $selected_properties= "";
-    if(isset($_POST["properties"])){
-	    $posted_properties= $_POST["properties"];
-	    foreach($posted_properties as $item) {
-	      $selected_properties.= $properties[$item];
-	    }
-      $max_lenght= strlen($selected_properties);
-      $selected_properties= substr(trim($selected_properties),0,$max_lenght-2);
+
+if(isset($_POST["properties"])){
+    $posted_properties= $_POST["properties"]; // the vallue of the selected ones in the form in an array
+    foreach($posted_properties as $item1) {//i define the right location based on the value that i get out the form and put it in a string.
+        // printf("<p>%s - %s - (%s)</p>",$locations[$item],"was de keuze", "woei");
+        $selected_properties.= $properties[$item1].",";
+    }
+
+    $selected_properties = rtrim($selected_properties, ','); //rtrim means: right trim at the end.
+    $arr_selected_properties = explode(",", $selected_properties);
+
+    foreach ($arr_selected_properties as $item1) {
+        insert_properties_value($_SESSION["house_id"] + 1,$item1 );
+    }
+
     }//------end-propreties-
   //-------Chek-the-selected-status-----------------------------------------------
     $status= [
-	    "beschikbaar",
-	    "verkocht"
+	    "1",
+	    "2"
     ];
-    $selected_status= "";
-    if(isset($_POST["status"])){
-	    $posted_status= $_POST["status"];
-	    foreach($posted_status as $item){
-	      $selected_status.= $status[$item];
-	    }
+
+$selected_status= "";
+
+if(isset($_POST["status"])){
+    $posted_status= $_POST["status"]; // the vallue of the selected ones in the form in an array
+    foreach($posted_status as $item1) {//i define the right location based on the value that i get out the form and put it in a string.
+        // printf("<p>%s - %s - (%s)</p>",$locations[$item],"was de keuze", "woei");
+        $selected_status.= $status[$item1].",";
+    }
+
+    $selected_status = rtrim($selected_status, ','); //rtrim means: right trim at the end.
+    $arr_selected_status = explode(",", $selected_status);
+
+    foreach ($arr_selected_status as $item1) {
+        insert_status_value($_SESSION["house_id"] + 1,$item1 );
+    }
     }//end-selected-status
+
+
   //-------chek-if-!isset-or-empty-function---------------------------------------
-    chek_if_not_isset_or_empty($_POST["title"]);
-    chek_if_not_isset_or_empty($_POST["price"]);
-    chek_if_not_isset_or_empty($_POST["address"]);
-    chek_if_not_isset_or_empty($_POST["postalcode"]);
-    chek_if_not_isset_or_empty($_POST["place"]);
-    chek_if_not_isset_or_empty($_POST["description"]);
-    chek_if_not_isset_or_empty($selected_properties);
-    chek_if_not_isset_or_empty($selected_locations);
-    chek_if_not_isset_or_empty($selected_status);
+    /*    chek_if_not_isset_or_empty($_POST["title"]);
+        chek_if_not_isset_or_empty($_POST["price"]);
+        chek_if_not_isset_or_empty($_POST["address"]);
+        chek_if_not_isset_or_empty($_POST["postalcode"]);
+        chek_if_not_isset_or_empty($_POST["place"]);
+        chek_if_not_isset_or_empty($_POST["description"]);
+        chek_if_not_isset_or_empty($selected_properties);
+        chek_if_not_isset_or_empty($selected_locations);
+        chek_if_not_isset_or_empty($selected_status);
+    */
 
     $title= $_POST["title"];
     $price= $_POST["price"];
@@ -85,22 +104,150 @@ Revision history
     $description= $_POST["description"];
 
   //-------first_photo-chek-AND-Upload-to-map-images-function---------------------
-    chek_photo_AND_Upload_to_map_images("first_photo");//$_FILES["first_photo"];
-    chek_photo_AND_Upload_to_map_images("photo_1");
-    chek_photo_AND_Upload_to_map_images("photo_2");
-    chek_photo_AND_Upload_to_map_images("photo_3");
-    chek_photo_AND_Upload_to_map_images("photo_4");
 
-    $first_photo= $_FILES["first_photo"]["name"];
 
-    $four_photos=""; //i make a string to put the phat in an array for later on.
-    $four_photos.= $_FILES["photo_1"]["name"].",";
-    $four_photos.= $_FILES["photo_2"]["name"].",";
-    $four_photos.= $_FILES["photo_3"]["name"].",";
-    $four_photos.= $_FILES["photo_4"]["name"];
-    //-------end-photo-chek-------
 
-  //-------Insirt-in-to-DataBase--------------------------------------------------
+include 'dbConfig.php';
+
+
+// File upload path
+$targetDir = "images/";
+$fileName = basename($_FILES["first_photo"]["name"]);
+$targetFilePath = $targetDir . $fileName;
+$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+$house_id = $_SESSION["house_id"] + 1;
+
+if(isset($_POST["submit"]) && !empty($_FILES["first_photo"]["name"])) {
+    // Allow certain file formats
+    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+    if (in_array($fileType, $allowTypes)) {
+        // Upload file to server
+        if (move_uploaded_file($_FILES["first_photo"]["tmp_name"], $targetFilePath)) {
+            // Insert image file name into database
+            $order = 1;
+            $insert = $db->query("INSERT into images (image_path, house_id, `order`) VALUES ('" . $fileName . "', '" . $house_id . "','" . $order . "')");
+        }
+    }
+}
+
+// File upload path
+$targetDir = "images/";
+$fileName = basename($_FILES["photo_1"]["name"]);
+$targetFilePath = $targetDir . $fileName;
+$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+$house_id = $_SESSION["house_id"] + 1;
+
+if(isset($_POST["submit"]) && !empty($_FILES["photo_1"]["name"])) {
+    // Allow certain file formats
+    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+    if (in_array($fileType, $allowTypes)) {
+        // Upload file to server
+        if (move_uploaded_file($_FILES["photo_1"]["tmp_name"], $targetFilePath)) {
+            // Insert image file name into database
+            $order = 2;
+            $insert = $db->query("INSERT into images (image_path, house_id, `order`) VALUES ('" . $fileName . "', '" . $house_id . "','" . $order . "')");
+        }
+    }
+}
+
+// File upload path
+$targetDir = "images/";
+$fileName = basename($_FILES["photo_2"]["name"]);
+$targetFilePath = $targetDir . $fileName;
+$fileType1 = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+if(isset($_POST["submit"]) && !empty($_FILES["photo_2"]["name"])) {
+    // Allow certain file formats
+    $allowTypes1 = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+    if (in_array($fileType1, $allowTypes1)) {
+        // Upload file to server
+        if (move_uploaded_file($_FILES["photo_2"]["tmp_name"], $targetFilePath)) {
+            // Insert image file name into database
+            $order = 3;
+            $insert = $db->query("INSERT into images (image_path, house_id, `order`) VALUES ('" . $fileName . "', '" . $house_id . "','" . $order . "')");
+        }
+    }
+}
+
+
+
+// File upload path
+$targetDir = "images/";
+$fileName = basename($_FILES["photo_3"]["name"]);
+$targetFilePath = $targetDir . $fileName;
+$fileType1 = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+if(isset($_POST["submit"]) && !empty($_FILES["photo_3"]["name"])){
+    // Allow certain file formats
+    $allowTypes1 = array('jpg','png','jpeg','gif','pdf');
+    if(in_array($fileType1, $allowTypes1)){
+        // Upload file to server
+        if(move_uploaded_file($_FILES["photo_3"]["tmp_name"], $targetFilePath)){
+            // Insert image file name into database
+            $order = 4;
+            $insert = $db->query("INSERT into images (image_path, house_id, `order`) VALUES ('".$fileName."', '".$house_id."','".$order."')");
+        }
+    }
+}
+
+
+// File upload path
+$targetDir = "images/";
+$fileName = basename($_FILES["photo_4"]["name"]);
+$targetFilePath = $targetDir . $fileName;
+$fileType1 = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+if(isset($_POST["submit"]) && !empty($_FILES["photo_4"]["name"])){
+    // Allow certain file formats
+    $allowTypes1 = array('jpg','png','jpeg','gif','pdf');
+    if(in_array($fileType1, $allowTypes1)){
+        // Upload file to server
+        if(move_uploaded_file($_FILES["photo_4"]["tmp_name"], $targetFilePath)){
+            // Insert image file name into database
+            $order = 5;
+            $insert = $db->query("INSERT into images (image_path, house_id, `order`) VALUES ('".$fileName."', '".$house_id."','".$order."')");
+        }
+    }
+}
+
+?>
+
+
+<!doctype html>
+<html lang="nl">
+  <head>
+	  <title>woningen.nl</title>
+
+	  <meta charset="UTF-8">
+	  <meta name="description" content="In deze geweldige website kunt u allerlei revieuws toevoegen en bekijken. U bent van harte welkom ...">
+	  <meta name="keywords" content="woningen.nl, review, gasten, welkom">
+	  <meta name="author" content="Mohamad Dian Bah">
+	  <meta name="robots" content="all">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/logo.png" sizes="16x16">
+	  <link rel="stylesheet" href="css/style.css">
+	  <meta name="theme-color" content="white"/>
+  </head>
+  <body>
+    <?php require "inc/navbar.php";
+    // Display status message
+
+
+      ?>
+  </body>
+</html>
+
+<?php
+
+
+
+
+
+
+
+
+
+//-------Insirt-in-to-DataBase--------------------------------------------------
     include("./database/config.php");
     include("./database/opendb.php");
 
@@ -116,22 +263,34 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "INSERT INTO houses (house_location_id, price, description, address, postalcode, place)
+$sql = "INSERT INTO houses (title, price, description, address, postalcode, place)
 VALUES ('".$_POST["title"]."','".$_POST["price"]."','".$_POST["description"]."','".$_POST["address"]."', '".$_POST["postalcode"]."', '".$_POST["place"]."')";
 
-$sql = "INSERT INTO houses_location (house_id, location_id)
-VALUES ('".$_POST["house_id"]."','".$_POST["location[]"]."')";
-
-$sql = "INSERT INTO houses_location (house_id, location_id)
-VALUES ('".$_POST["house_id"]."','".$_POST["location[]"]."')";
-
 if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
+    $house_id = $conn->insert_id;
+    $_SESSION["house_id"]= $house_id;
+    echo "<p style=' height: 200px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    font-weight: bolder;
+    font-size: 1.5rem;
+    margin-top: -100px;
+    margin-left: -200px;'>Woning succesvol toegevoegd" ;
+
+    echo "<a style='
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: -100px;
+    margin-left: -200px;' href=\"overview.php\">Ga naar overzicht</a>";
+
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
-$conn->close();
-?>
 
+$conn->close();
 ?>

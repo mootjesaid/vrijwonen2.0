@@ -37,32 +37,35 @@ Revision history
         <tr class="col-12">
     	    <td class="col-12"><input class="col-5" type="text" name="place" placeholder="Plaats"><textarea class="col-5" input type="text" name="description" placeholder="Omschijving*"></textarea></td>
     	  </tr>
+
         <tr class="col-12">
-    	    <td class="col-12">
-            <label class="col-7">
-              <b>Default Afbeelding:</b>  <input type="file" name="first_photo" accept="image/*">
-            </label>
-          </td>
-    	  </tr>
-        <tr class="col-12">
-    	    <td class="col-12">
+              <td class="col-12">
+                  <label class="col-7">
+                      <b>Default Afbeelding:</b>  <input type="file" name="first_photo" accept="image/*">
+                  </label>
+              </td>
+          </tr>
             <b class="col-12">4 Afbeelding kiezen: </b>
-          </td>
-          <td class="col-12">
-            <label><b>1</b>
-              <input class="col-2" type="file" name="photo_1" accept="image/*">              
-            </label>
-            <label>2
-              <input class="col-2" type="file" name="photo_2" accept="image/*">
-            </label>
-            <label>3
-              <input class="col-2" type="file" name="photo_3" accept="image/*">              
-            </label>
-            <label><b>4</b>
-              <input class="col-2" type="file" name="photo_4" accept="image/*">
-            </label>           
+            <td class="col-12">
+                <label class="col-7">
+                    <b>afbeelding:</b>  <input type="file" name="photo_1" accept="image/*">
+                </label>
+                <label class="col-7">
+                    <b>afbeelding:</b>  <input type="file" name="photo_2" accept="image/*">
+                </label>
+                <label class="col-7">
+                    <b>afbeelding:</b>  <input type="file" name="photo_3" accept="image/*">
+                </label>
+                <label class="col-7">
+                    <b>afbeelding:</b>  <input type="file" name="photo_4" accept="image/*">
+                </label>
+                <label class="col-7">
+                    <b>afbeelding:</b>  <input type="file" name="photo_5" accept="image/*">
+                </label>
+            </td>
           </td>
         </tr>
+
           <!-- -----------start----Ligging------------------ -->
         <tr class="col-12">
           <td class="col-11">
@@ -138,3 +141,4 @@ Revision history
 
   </body>
 </html>
+

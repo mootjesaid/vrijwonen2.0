@@ -123,4 +123,80 @@ Revision history
 //    include("./database/closedb.php");
 }
 
+//-------inset-properties-value-----
+function insert_properties_value($house_id,$propertie_id){
+    include("./database/config.php");
+    include("./database/opendb.php");
+    $query = "INSERT INTO houses_properties (propertie_id, house_id) ";
+    $query .= "VALUES (?,?) ";
+
+    $preparedQuery=$dbaselink->prepare($query);
+    $preparedQuery->bind_param("si",$propertie_id, $house_id);
+    $preparedQuery->execute();
+
+//    if(($preparedQuery->ernno) || ($result === false)){
+//        echo "fout bij uitvoeren commando";
+//        exit;
+//    }else{
+//        //location value is toegevoegd;
+//    }
+
+
+
+    $preparedQuery->close();
+//    include("./database/closedb.php");
+}
+
+
+//-------inset-properties-value-----
+function insert_status_value($house_id,$status_id){
+    include("./database/config.php");
+    include("./database/opendb.php");
+    $query = "INSERT INTO houses_status (status_id, house_id) ";
+    $query .= "VALUES (?,?) ";
+
+    $preparedQuery=$dbaselink->prepare($query);
+    $preparedQuery->bind_param("si",$status_id, $house_id);
+    $preparedQuery->execute();
+
+//    if(($preparedQuery->ernno) || ($result === false)){
+//        echo "fout bij uitvoeren commando";
+//        exit;
+//    }else{
+//        //location value is toegevoegd;
+//    }
+
+
+
+    $preparedQuery->close();
+//    include("./database/closedb.php");
+}
+
+
+//-------inset-properties-value-----
+function insert_image_value($house_id,$image_path){
+    include("./database/config.php");
+    include("./database/opendb.php");
+    $query = "INSERT INTO images (image_path, house_id) ";
+    $query .= "VALUES (?,?) ";
+
+    $preparedQuery=$dbaselink->prepare($query);
+    $preparedQuery->bind_param("si",$image_path, $house_id);
+    $preparedQuery->execute();
+
+//    if(($preparedQuery->ernno) || ($result === false)){
+//        echo "fout bij uitvoeren commando";
+//        exit;
+//    }else{
+//        //location value is toegevoegd;
+//    }
+
+
+
+    $preparedQuery->close();
+//    include("./database/closedb.php");
+}
+
+
+
 ?>
