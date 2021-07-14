@@ -23,10 +23,11 @@ Revision history
     <link rel="icon" href="images/logo.png" sizes="16x16">
 	  <link rel="stylesheet" href="css/style.css">
 	  <meta name="theme-color" content="white"/>
-  </head>
+	  
+	  </head>
   <body>
-    <?php require "inc/navbar.php"; 
-      require_once("./functions/functions_detail.php");
+   <div class='no-print'> <?php require "inc/navbar.php"; ?></div>
+      <?php require_once("./functions/functions_detail.php");
 
       //chek the ID
       if(!isset($_GET["house_id"]) || empty($_GET["house_id"])){
@@ -103,7 +104,7 @@ Revision history
 
 
     <h1><?php echo $title; ?></h2>
-    <a class="a_next" id="a_aanpassen" href="./update.php?house_id=<?php echo $house_id; ?>"> Aanpassen</a>
+    <a class="a_next no-print" id="a_aanpassen" href="./update.php?house_id=<?php echo $house_id; ?>"> Aanpassen</a>
 
     <table class="col-9 table_detail">
         <tr class="col-12">
@@ -118,7 +119,7 @@ Revision history
     	    <td class="col-8"><b>Omschrijving:</b> <?php echo "<br><p>".$description."</p>"; ?></td>
     	  </tr>
         <tr class="col-12">
-    	    <td class="col-8"><b>Afbeeldingen: </b> <button class="a_next" onclick="changeImg()">Volgende ››</button></td>          
+    	    <td class="col-8"><b>Afbeeldingen: </b> <button class="a_next no-print" onclick="changeImg()">Volgende ››</button></td>          
           <td class="col-8 imgs_detail">
           <!---------------- images---------------- -->
           <?php echo "<img src=\"./images/".$arr_images_path[0]."\" alt=\"Afbeeldingen van het huis.\" id=\"img-id\" onclick=\"changeImg()\">"; ?>
@@ -135,6 +136,29 @@ Revision history
           <td class="col-6"><b>Eingenschappen: </b><?php echo $str_value_properties; ?></td>
           <td class="col-3"><b>Status:</b> <?php echo $str_value_status; ?></td>
         </tr>
+        
+        <style media="print">
+@media print {
+    @page {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    body {
+        padding-top: 72px;
+        padding-bottom: 72px ;
+    }
+.no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+</style>
+
+<td class="col-12 no-print">
+<form>
+    <input type=button name=print value="Download PDF" onClick="window.print()">
+</form>
+</td>
     </table>
   </body>
 </html>
