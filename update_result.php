@@ -28,13 +28,12 @@ Revision history
   $postalcode= $_POST["postalcode"];
   $place= $_POST["place"];
   
-  var_dump($_FILES["photos"]);
+  //var_dump($_FILES["photos"]);
 
   //-------Update - images------------------------------------------------
-    images_path($house_id);
-    $str_images_path= $_SESSION["images_path"];
-    $arr_images_path = explode(",", $str_images_path);
-    exit;
+    //images_path($house_id);
+    //$str_images_path= $_SESSION["images_path"];
+    //$arr_images_path = explode(",", $str_images_path);
     // Delete---images
     // if (file_exists('images/1---1.jpg')){
     //   unlink('images/1---1.jpg');
