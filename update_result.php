@@ -100,5 +100,8 @@ Revision history
         insert_up_houses_status($house_id, $item);
       }
     }
+    $added= "Het huis is gewijzigd";
+    echo "<script type='text/javascript'>alert('$added');</script>";
     echo '<meta http-equiv="refresh" content="0;URL=\'./detail.php?house_id='.$house_id.'\'">';
+    
 ?>
