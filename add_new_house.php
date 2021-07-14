@@ -59,9 +59,6 @@ Revision history
                 <label class="col-7">
                     <b>afbeelding:</b>  <input type="file" name="photo_4" accept="image/*">
                 </label>
-                <label class="col-7">
-                    <b>afbeelding:</b>  <input type="file" name="photo_5" accept="image/*">
-                </label>
             </td>
           </td>
         </tr>
