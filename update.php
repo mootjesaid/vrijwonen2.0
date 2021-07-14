@@ -37,7 +37,6 @@ Revision history
     }else{
       $house_id= $_GET["house_id"];
     }
-
     //--------------houses data-------------
       house_data($house_id);//It returns the house data in SESSIONS
 
@@ -86,10 +85,7 @@ Revision history
       //if($counter> 0){
       //  echo "checked= \"checked\"";
       //}
-      
-
     
-  
   ?>
     <form action="./update_result.php?house_id=<?php echo $house_id; ?>" method="post" enctype="multipart/form-data"><role="form">
       <h1><?php echo $title; ?></h1>
