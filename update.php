@@ -37,7 +37,12 @@ Revision history
     }else{
       $house_id= $_GET["house_id"];
     }
-    //--------------houses data-------------
+
+    //--------------house images-------------------
+      images_path($house_id);
+      $str_images_path= $_SESSION["images_path"];
+      $arr_images_path = explode(",", $str_images_path);
+    //--------------house data---------------------
       house_data($house_id);//It returns the house data in SESSIONS
 
       $title= $_SESSION["title"];
@@ -85,7 +90,10 @@ Revision history
       //if($counter> 0){
       //  echo "checked= \"checked\"";
       //}
+      
+
     
+  
   ?>
     <form action="./update_result.php?house_id=<?php echo $house_id; ?>" method="post" enctype="multipart/form-data"><role="form">
       <h1><?php echo $title; ?></h1>
@@ -111,7 +119,9 @@ Revision history
         <tr class="col-12">
     	    <td class="col-12">
             <label class="col-7">
-              <b>Default Afbeelding:</b>  <input type="file" name="first_photo" accept="image/*">
+              <b>Default Afbeelding:</b>
+              <input type="file" name="photos[]" value="0" accept="image/*">
+              <img class="col-3" src="./images/<?php echo $arr_images_path[0] ?>" alt="huis image">
             </label>
           </td>
     	  </tr>
@@ -121,16 +131,20 @@ Revision history
           </td>
           <td class="col-12">
             <label><b>1</b>
-              <input class="col-2" type="file" name="photo_1" accept="image/*">              
+              <img class="col-1" src="./images/<?php echo $arr_images_path[1] ?>" alt="huis image">
+              <input class="col-1" type="file" name="photos[]" accept="image/*">              
             </label>
             <label>2
-              <input class="col-2" type="file" name="photo_2" accept="image/*">
+              <img class="col-1" src="./images/<?php echo $arr_images_path[2] ?>" alt="huis image">
+              <input class="col-1" type="file" name="photos[]" accept="image/*">
             </label>
             <label>3
-              <input class="col-2" type="file" name="photo_3" accept="image/*">              
+              <img class="col-1" src="./images/<?php echo $arr_images_path[3] ?>" alt="huis image">
+              <input class="col-1" type="file" name="photos[]" accept="image/*">              
             </label>
             <label><b>4</b>
-              <input class="col-2" type="file" name="photo_4" accept="image/*">
+              <img class="col-1" src="./images/<?php echo $arr_images_path[4] ?>" alt="huis image">
+              <input class="col-1" type="file" name="photos[]" accept="image/*">
             </label>           
           </td>
         </tr>
@@ -139,23 +153,23 @@ Revision history
           <td class="col-11">
             <b>Ligging:</b>          
             <label>
-              <input type="checkbox" name="location[]" value="0" <?php $counter= substr_count($str_value_locations,"bos"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              <input type="checkbox" name="locations[]" value="0" <?php $counter= substr_count($str_value_locations,"bos"); if($counter> 0){ echo "checked= \"checked\"";}?> >
               -Dicht bij een bos.
             </label>          
             <label>
-              <input type="checkbox" name="location[]" value="1" <?php $counter= substr_count($str_value_locations,"stad"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              <input type="checkbox" name="locations[]" value="1" <?php $counter= substr_count($str_value_locations,"stad"); if($counter> 0){ echo "checked= \"checked\"";}?> >
               -Dicht bij een stad.
             </label>          
             <label>
-              <input type="checkbox" name="location[]" value="2" <?php $counter= substr_count($str_value_locations,"zee"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              <input type="checkbox" name="locations[]" value="2" <?php $counter= substr_count($str_value_locations,"zee"); if($counter> 0){ echo "checked= \"checked\"";}?> >
               -Dicht bij de zee.
             </label>          
             <label>
-              <input type="checkbox" name="location[]" value="3" <?php $counter= substr_count($str_value_locations,"heuvelland"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              <input type="checkbox" name="locations[]" value="3" <?php $counter= substr_count($str_value_locations,"heuvelland"); if($counter> 0){ echo "checked= \"checked\"";}?> >
               -In het heuvelland.
             </label>          
             <label>
-              <input type="checkbox" name="location[]" value="4" <?php $counter= substr_count($str_value_locations,"water"); if($counter> 0){ echo "checked= \"checked\"";}?> >
+              <input type="checkbox" name="locations[]" value="4" <?php $counter= substr_count($str_value_locations,"water"); if($counter> 0){ echo "checked= \"checked\"";}?> >
               -Aan het water.
             </label>
           </td>
